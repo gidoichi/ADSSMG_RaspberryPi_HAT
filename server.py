@@ -17,23 +17,43 @@ werkzeug_logger = logging.getLogger("werkzeug")
 werkzeug_logger.setLevel(logging.WARNING)
 
 @app.route("/")
-@app.route("/<path:_>")
-def sample(_=None):
+def sample():
+    result = {
+        "bme280": sample_bme280(),
+        "vcnl4020": sample_vcnl4020(),
+    }
+    return result
+
+@app.route("/bme280")
+def sample_bme280():
     data = bme280.sample(i2c, BME280_ADDR)
     result = {
-        "adssmg02": {
-            "temperature": {
-                "value": data.temperature,
-                "unit": "°C",
-            },
-            "humidity": {
-                "value": data.humidity,
-                "unit": "%rH",
-            },
-            "pressure": {
-                "value": data.pressure,
-                "unit": "hPa",
-            },
+        "temperature": {
+            "value": data.temperature,
+            "unit": "°C",
+        },
+        "humidity": {
+            "value": data.humidity,
+            "unit": "%rH",
+        },
+        "pressure": {
+            "value": data.pressure,
+            "unit": "hPa",
+        },
+    }
+    return result
+
+@app.route("/vcnl4020")
+def sample_vcnl4020():
+    from shellmag57.VCNL4020 import VCNL4020
+    sensor = VCNL4020()
+    result = {
+        "proximity": {
+            "value": sensor.proximity,
+        },
+        "luminance": {
+            "value": sensor.luminance,
+            "unit": "lux"
         },
     }
     return result
