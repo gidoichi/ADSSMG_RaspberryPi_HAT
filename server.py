@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import logging
 import os
 import sys
 
@@ -20,8 +19,6 @@ i2c = smbus2.SMBus(BUS_NO)
 bme280.load_calibration_params(i2c, BME280_ADDR)
 
 app = flask.Flask(__name__)
-werkzeug_logger = logging.getLogger("werkzeug")
-werkzeug_logger.setLevel(logging.WARNING)
 
 @app.route("/")
 def sample():
