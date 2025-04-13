@@ -6,9 +6,13 @@
   "schedule": "* * 1-7 * 6",
   "packageRules": [
     {
-      "groupName": "dependencies",
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "matchPackageNames": ["*"],
+      "commitMessagePrefix": "[update:patch]",
+      "commitMessageExtra": null,
       "recreateWhen": "always",
-      "matchPackageNames": ["*"]
+      "automerge": true
     }
   ]
 }
