@@ -6,4 +6,4 @@ RPi.GPIO==0.7.1
 smbus==1.1.post2
 
 # server.py
-Flask==3.1.0
+Flask==3.1.1
