@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
+import logging
 import os
 import sys
 
 import bme280
 import flask
 import smbus2
+import waitress
 
 sys.path.append("shellmag57")
 
@@ -84,4 +86,6 @@ def sample_vcnl4020():
     return result
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    logging.getLogger('waitress').setLevel(logging.INFO)
+
+    waitress.serve(app)
