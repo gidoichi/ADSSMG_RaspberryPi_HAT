@@ -6,7 +6,7 @@
   "schedule": "* * 1-7 * 6",
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "matchCurrentVersion": "!/^0/",
       "matchPackageNames": ["*"],
       "commitMessagePrefix": "[update:patch]",
