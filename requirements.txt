@@ -1,6 +1,6 @@
 Adafruit_GPIO==1.0.3
 Adafruit_SSD1306==1.6.2
-Pillow==12.0.0
+Pillow==12.1.0
 RPi.BME280==0.2.4
 RPi.GPIO==0.7.1
 smbus==1.1.post2
