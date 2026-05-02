@@ -1,4 +1,4 @@
-FROM python:3.14.3-slim@sha256:5e59aae31ff0e87511226be8e2b94d78c58f05216efda3b07dbbed938ec8583b
+FROM python:3.14.4-slim@sha256:c11aee3b3cae066f55d1e9318fc812673aa6557073b0db0d792b59491b262e0c
 WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN apt update && apt install -y build-essential && apt clean && rm -rf /var/lib/apt/lists/*
