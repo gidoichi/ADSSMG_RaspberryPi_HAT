@@ -6,6 +6,8 @@ import sys
 
 import bme280
 import flask
+from dataclasses import dataclass
+from typing import Optional
 import smbus2
 import waitress
 
@@ -22,9 +24,14 @@ bme280.load_calibration_params(i2c, BME280_ADDR)
 
 app = flask.Flask(__name__)
 
+@dataclass
+class SensorData:
+    value: float
+    unit: Optional[str] = None
+
 @app.route("/")
-def sample():
-    result = {
+def sample() -> dict[str, dict[str, bool|str|SensorData]]:
+    result: dict[str, dict[str, bool|str|SensorData]] = {
         "bme280": sample_bme280(),
         "tp401t": sample_tp401t(),
         "vcnl4020": sample_vcnl4020(),
@@ -32,35 +39,24 @@ def sample():
     return result
 
 @app.route("/bme280")
-def sample_bme280():
+def sample_bme280() -> dict[str, bool|str|SensorData]:
     data = bme280.sample(i2c, BME280_ADDR)
-    result = {
+    result: dict[str, bool|str|SensorData] = {
         "enable": True,
-        "temperature": {
-            "value": data.temperature,
-            "unit": "°C",
-        },
-        "humidity": {
-            "value": data.humidity,
-            "unit": "%rH",
-        },
-        "pressure": {
-            "value": data.pressure,
-            "unit": "hPa",
-        },
+        "temperature": SensorData(value=data.temperature, unit="°C"),
+        "humidity": SensorData(value=data.humidity, unit="%rH"),
+        "pressure": SensorData(value=data.pressure, unit="hPa"),
     }
     return result
 
 @app.route("/tp401t")
-def sample_tp401t():
+def sample_tp401t() -> dict[str, bool|str|SensorData]:
     if os.path.exists(TP401T.SYSFS_PATH):
         sensor = TP401T()
         data = sensor.getVoltage(sensor.tp401_ch)
-        result = {
+        result: dict[str, bool|str|SensorData] = {
             "enable": True,
-            "odor": {
-                "value": data,
-            },
+            "odor": SensorData(value=data),
         }
         return result
 
@@ -71,17 +67,12 @@ def sample_tp401t():
         }
 
 @app.route("/vcnl4020")
-def sample_vcnl4020():
+def sample_vcnl4020() -> dict[str, bool|str|SensorData]:
     sensor = VCNL4020()
-    result = {
+    result: dict[str, bool|str|SensorData] = {
         "enable": True,
-        "proximity": {
-            "value": sensor.proximity,
-        },
-        "luminance": {
-            "value": sensor.luminance,
-            "unit": "lux"
-        },
+        "proximity": SensorData(value=sensor.proximity),
+        "luminance": SensorData(value=sensor.luminance, unit="lux"),
     }
     return result
 
