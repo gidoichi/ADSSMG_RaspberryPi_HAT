@@ -53,7 +53,7 @@ def sample_bme280():
 
 @app.route("/tp401t")
 def sample_tp401t():
-    if os.path.exists(TP401T.SYSFS_PATH):
+    try:
         sensor = TP401T()
         data = sensor.getVoltage(sensor.tp401_ch)
         result = {
@@ -64,10 +64,10 @@ def sample_tp401t():
         }
         return result
 
-    else:
+    except Exception as e:
         return {
             "enable": False,
-            "message": f"not found: {TP401T.SYSFS_PATH}",
+            "message": e,
         }
 
 @app.route("/vcnl4020")
