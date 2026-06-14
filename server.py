@@ -29,9 +29,15 @@ class SensorData:
     value: float
     unit: Optional[str] = None
 
+@dataclass
+class ModuleData:
+    enable: bool
+    data: Optional[dict[str, SensorData]] = None
+    message: Optional[str] = None
+
 @app.route("/")
-def sample() -> dict[str, dict[str, bool|str|SensorData]]:
-    result: dict[str, dict[str, bool|str|SensorData]] = {
+def sample() -> dict[str, ModuleData]:
+    result: dict[str, ModuleData] = {
         "bme280": sample_bme280(),
         "tp401t": sample_tp401t(),
         "vcnl4020": sample_vcnl4020(),
@@ -39,41 +45,47 @@ def sample() -> dict[str, dict[str, bool|str|SensorData]]:
     return result
 
 @app.route("/bme280")
-def sample_bme280() -> dict[str, bool|str|SensorData]:
+def sample_bme280() -> ModuleData:
     data = bme280.sample(i2c, BME280_ADDR)
-    result: dict[str, bool|str|SensorData] = {
-        "enable": True,
-        "temperature": SensorData(value=data.temperature, unit="°C"),
-        "humidity": SensorData(value=data.humidity, unit="%rH"),
-        "pressure": SensorData(value=data.pressure, unit="hPa"),
-    }
+    result = ModuleData(
+        enable=True,
+        data={
+            "temperature": SensorData(value=data.temperature, unit="°C"),
+            "humidity": SensorData(value=data.humidity, unit="%rH"),
+            "pressure": SensorData(value=data.pressure, unit="hPa"),
+        },
+    )
     return result
 
 @app.route("/tp401t")
-def sample_tp401t() -> dict[str, bool|str|SensorData]:
+def sample_tp401t() -> ModuleData:
     if os.path.exists(TP401T.SYSFS_PATH):
         sensor = TP401T()
         data = sensor.getVoltage(sensor.tp401_ch)
-        result: dict[str, bool|str|SensorData] = {
-            "enable": True,
-            "odor": SensorData(value=data),
-        }
+        result = ModuleData(
+            enable=True,
+            data={
+                "odor": SensorData(value=data),
+            },
+        )
         return result
 
     else:
-        return {
-            "enable": False,
-            "message": f"not found: {TP401T.SYSFS_PATH}",
-        }
+        return ModuleData(
+            enable=False,
+            message=f"not found: {TP401T.SYSFS_PATH}",
+        )
 
 @app.route("/vcnl4020")
-def sample_vcnl4020() -> dict[str, bool|str|SensorData]:
+def sample_vcnl4020() -> ModuleData:
     sensor = VCNL4020()
-    result: dict[str, bool|str|SensorData] = {
-        "enable": True,
-        "proximity": SensorData(value=sensor.proximity),
-        "luminance": SensorData(value=sensor.luminance, unit="lux"),
-    }
+    result = ModuleData(
+        enable=True,
+        data={
+            "proximity": SensorData(value=sensor.proximity),
+            "luminance": SensorData(value=sensor.luminance, unit="lux"),
+        },
+    )
     return result
 
 if __name__ == "__main__":
