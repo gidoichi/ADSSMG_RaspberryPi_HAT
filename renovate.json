@@ -3,66 +3,22 @@
   "extends": [
     "config:best-practices"
   ],
+  "addLabels": [
+    "automerge"
+  ],
+  "automerge": true,
   "branchConcurrentLimit": 0,
   "labels": [
     "dependencies"
   ],
+  "recreateWhen": "always",
   "schedule": "* 0 1-7 * 6",
   "packageRules": [
     {
-      "addLabels": [
-        "automerge"
-      ],
-      "automerge": true,
-      "commitMessageExtra": null,
-      "commitMessagePrefix": "ci(deps):",
-      "matchFileNames": [
-        ".github/workflows/publish-container.yml"
-      ],
-      "recreateWhen": "always"
-    },
-    {
-      "addLabels": [
-        "automerge"
-      ],
-      "automerge": true,
-      "commitMessagePrefix": "ci(deps):",
-      "matchCurrentVersion": "!/^0/",
-      "matchFileNames": [
-        ".github/**"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch",
-        "pin",
-        "digest"
-      ],
-      "recreateWhen": "always"
-    },
-    {
       "commitMessagePrefix": "ci(deps):",
       "matchFileNames": [
         ".github/**"
       ],
-      "recreateWhen": "always"
-    },
-    {
-      "addLabels": [
-        "automerge"
-      ],
-      "automerge": true,
-      "commitMessagePrefix": "build(deps):",
-      "matchCurrentVersion": "!/^0/",
-      "matchPackageNames": [
-        "*"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch",
-        "pin",
-        "digest"
-      ],
-      "recreateWhen": "always"
     }
   ]
 }
