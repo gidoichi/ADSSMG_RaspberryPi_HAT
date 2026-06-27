@@ -1,0 +1,48 @@
+name: Release
+on:
+  push:
+    branches: ["main"]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      old-tag: ${{ steps.old-tag.outputs.tag }}
+      new-tag: ${{ steps.new-tag.outputs.tag }}
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: old-tag
+      - name: Semantic Release
+        uses: cocogitto/cocogitto-action@v4
+        with:
+          command: bump
+          args: --auto --disable-bump-commit
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: new-tag
+
+  tag:
+    needs: check
+    if: ${{ needs.check.outputs.new-tag != needs.check.outputs.old-tag }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      value: ${{ steps.new-tag.outputs.tag }}
+      pushed: ${{ steps.exists.outputs.exists == 'false' }}
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions-ecosystem/action-push-tag@v1
+        with:
+          tag: ${{ needs.check.outputs.new-tag }}
+
+  container:
+    needs: check
+    if: ${{ needs.check.outputs.new-tag != needs.check.outputs.old-tag }}
+    permissions:
+      contents: write
+    uses: ./.github/workflows/publish-container.yml
+    secrets: inherit
+    with:
+      tag: ${{ needs.check.outputs.new-tag }}
