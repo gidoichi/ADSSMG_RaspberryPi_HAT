@@ -24,7 +24,7 @@ jobs:
       - uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
           platforms: linux/amd64,linux/arm64
-          push: false
+          push: true
           tags: |
             ${{ inputs.tag != '' && format('{0}/adssmg-raspberrypi-hat:{1}', github.repository_owner, inputs.tag) || '' }}
             ${{ github.repository_owner }}/adssmg-raspberrypi-hat:latest
