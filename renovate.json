@@ -8,6 +8,7 @@
   ],
   "automerge": true,
   "branchConcurrentLimit": 0,
+  "commitMessagePrefix": "build(deps):",
   "labels": [
     "dependencies"
   ],
