@@ -19,7 +19,7 @@
       "commitMessagePrefix": "ci(deps):",
       "matchFileNames": [
         ".github/**"
-      ],
+      ]
     }
   ]
 }
