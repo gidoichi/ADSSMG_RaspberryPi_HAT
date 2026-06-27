@@ -12,14 +12,14 @@ jobs:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 0
-      - uses: actions-ecosystem/action-get-latest-tag@v1
+      - uses: actions-ecosystem/action-get-latest-tag@b7c32daec3395a9616f88548363a42652b22d435 # v1
         id: old-tag
       - name: Semantic Release
-        uses: cocogitto/cocogitto-action@v4
+        uses: cocogitto/cocogitto-action@390bda87a19bf627e03ad075c67a11e9ddbb7547 # v4
         with:
           command: bump
           args: --auto --disable-bump-commit
-      - uses: actions-ecosystem/action-get-latest-tag@v1
+      - uses: actions-ecosystem/action-get-latest-tag@b7c32daec3395a9616f88548363a42652b22d435 # v1
         id: new-tag
 
   tag:
@@ -33,7 +33,7 @@ jobs:
       pushed: ${{ steps.exists.outputs.exists == 'false' }}
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
-      - uses: actions-ecosystem/action-push-tag@v1
+      - uses: actions-ecosystem/action-push-tag@6e82caefe706f5a729e354df7443dc82f98a414f # v1
         with:
           tag: ${{ needs.check.outputs.new-tag }}
 
