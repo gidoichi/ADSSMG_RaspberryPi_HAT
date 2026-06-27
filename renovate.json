@@ -26,7 +26,6 @@
         "automerge"
       ],
       "automerge": true,
-      "commitMessageExtra": null,
       "commitMessagePrefix": "ci(deps):",
       "matchCurrentVersion": "!/^0/",
       "matchFileNames": [
@@ -41,11 +40,17 @@
       "recreateWhen": "always"
     },
     {
+      "commitMessagePrefix": "ci(deps):",
+      "matchFileNames": [
+        ".github/**"
+      ],
+      "recreateWhen": "always"
+    },
+    {
       "addLabels": [
         "automerge"
       ],
       "automerge": true,
-      "commitMessageExtra": null,
       "commitMessagePrefix": "build(deps):",
       "matchCurrentVersion": "!/^0/",
       "matchPackageNames": [
