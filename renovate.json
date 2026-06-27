@@ -16,6 +16,18 @@
       "automerge": true,
       "commitMessageExtra": null,
       "commitMessagePrefix": "ci(deps):",
+      "matchFileNames": [
+        ".github/workflows/publish-container.yml"
+      ],
+      "recreateWhen": "always"
+    },
+    {
+      "addLabels": [
+        "automerge"
+      ],
+      "automerge": true,
+      "commitMessageExtra": null,
+      "commitMessagePrefix": "ci(deps):",
       "matchCurrentVersion": "!/^0/",
       "matchFileNames": [
         ".github/**"
